@@ -1,0 +1,69 @@
+{
+  "summary": "Comprehensive Playwright UI testing of the Greenlight Studio marketing site (Next.js 16 App Router, static site, no backend). All 15 review-request items were validated on both desktop (1920x1080) and mobile (390x844) viewports. The page renders cleanly with no JS errors, all data-testids present, all anchors point to correct hrefs, all section content matches the spec, scroll-triggered Reveal animations resolve to opacity:1 once in view, mobile layout stacks without horizontal scroll. Only one minor design discrepancy with the spec found: the navbar GitHub icon is hidden on mobile (CSS class `hidden sm:inline-flex`) whereas the spec expected it visible at 390px alongside logo + CTA.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Navbar",
+        "issue": "navbar-github icon is hidden on mobile viewports (<640px) due to `hidden sm:inline-flex` Tailwind class. Spec says mobile should still show 'logo + CTA + GitHub'. Either remove `hidden` so it shows from base, or update the spec. Low priority — GitHub link is still reachable via the footer.",
+        "selector": "[data-testid=\"navbar-github\"]",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Console warnings (cosmetic, non-blocking)",
+        "issues": [
+          "4 Next.js font preload warnings: 'resource was preloaded using link preload but not used within a few seconds from the window's load event'. These are common Next.js font optimization warnings and do not affect functionality, but the team may want to investigate `next/font` preload tuning."
+        ]
+      }
+    ]
+  },
+  "verified_features": [
+    "Page loads at root URL with all 8 sections present (navbar, hero, product-preview, features, philosophy/why, roadmap, pricing, download, footer). No console errors. HTTP 200.",
+    "Hero headline = 'Production Management.\\nReinvented.' with 'Reinvented.' rendered as italic green (font-display italic gl-green-text class confirmed).",
+    "Hero subhead, small text, primary CTA ('Download Android Beta' -> #download), secondary CTA ('View Features' -> #features) all present and correct.",
+    "Smooth scroll: clicking hero-primary-cta brings download-section into viewport; clicking hero-secondary-cta brings features-section into viewport.",
+    "All 5 navbar nav-link-* selectors exist with correct hrefs (#features, #why, #roadmap, #pricing, #download).",
+    "navbar-cta 'Get the Beta' -> #download. navbar-github -> https://github.com/KingCarni/Greenlight-Webpage with target=_blank.",
+    "screenshot-0 / 1 / 2 each present with an <img> inside loading from /screenshots/*.jpg.",
+    "All 6 feature cards present with correct kebab-case testids (asset-library, room-scanner, project-dashboard, ai-assistant, cloud-sync, team-collaboration).",
+    "All 8 roadmap items present in exact order: Android Beta (Shipped), Asset Library, Room Scanner, Project Dashboard, AI Automation (In progress), iOS App, Web Portal, Marketplace (Planned).",
+    "Pricing headline 'Pricing will be announced closer to launch.' rendered; pricing-cta 'Request Early Access' -> #download confirmed.",
+    "download-android shows version v0.1.0-beta; download-apk-button href = https://expo.dev/artifacts/eas/fq0q6eIotkCO3GuwP9JXMhvlnf7rtPB64EZyA-BvYjQ.apk with target=_blank.",
+    "download-ios and download-desktop cards both render 'COMING SOON' (CSS uppercase styling of 'Coming Soon') with Notify Me <button disabled>.",
+    "site-footer contains 'Greenlight Studio', '© 2026 Greenlight Studio', and footer-link-github -> https://github.com/KingCarni/Greenlight-Webpage target=_blank.",
+    "Mobile (390x844): nav-link-* are all hidden (md:flex), navbar-logo & navbar-cta visible, no horizontal scrollbar (documentElement.scrollWidth == clientWidth).",
+    "Scroll-triggered Reveal: pricing-cta resolves to computed opacity=1 after IntersectionObserver fires (~2s buffer). roadmap-item-0 opacity=1 after scrolling to roadmap section."
+  ],
+  "test_report_links": [],
+  "action_items": [
+    "OPTIONAL/LOW: Decide whether navbar GitHub icon should be visible on mobile. Currently `hidden sm:inline-flex` hides it below 640px. If the spec is the source of truth, remove `hidden` (replace with `inline-flex`). Otherwise update the spec — not blocking.",
+    "OPTIONAL/COSMETIC: Look into Next.js font preload warnings (4 .woff2 files preloaded but flagged as 'not used within a few seconds'). These are warnings only and do not break anything."
+  ],
+  "critical_code_review_comments": [
+    "lib/content.ts is a clean single source of truth for all copy — good pattern.",
+    "Reveal.tsx uses IntersectionObserver with rootMargin '-60px' and threshold 0.05 — solid approach, no Framer Motion dependency, lightweight.",
+    "Hero, Download, Pricing, Roadmap, FeatureGrid, ProductPreview, Footer all are well-structured client components with proper data-testid coverage on every interactive element.",
+    "Navbar GitHub icon uses `hidden sm:inline-flex` which contradicts the spec saying GitHub should be visible alongside logo + CTA on mobile. Minor inconsistency.",
+    "External links (APK, GitHub) correctly use target=_blank + rel='noopener noreferrer'. Good.",
+    "Disabled iOS/Desktop 'Notify Me' buttons use proper `disabled` attribute + opacity-60 + cursor-not-allowed. Good.",
+    "No console errors at runtime — only Next.js font preload warnings (cosmetic).",
+    "No backend / no /api endpoints — pure static marketing site, as described."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (no backend)",
+    "frontend": "98% (1 minor mobile GitHub-icon visibility discrepancy out of 15 requirements)"
+  },
+  "test_credentials": "N/A — no auth in this app.",
+  "seed_data_creation": "None — static site, no data layer.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "This is a static Next.js marketing site at the /app root (NOT /app/frontend). No backend, no /api routes. Preview URL: https://ba74791f-b638-4880-ad62-9e097816b78f.preview.emergentagent.com. All interactive elements have kebab-case data-testid attributes. Reveal animations use IntersectionObserver — give ~1.5–2s buffer after scrolling before asserting opacity. iOS/Desktop 'Notify Me' buttons are intentionally disabled. The COMING SOON labels render uppercase via CSS — use case-insensitive matching or compare against 'COMING SOON'. Mobile breakpoint hides both nav-links (md:flex) and navbar-github (sm:inline-flex), so on 390px viewport only logo + CTA are visible.",
+  "rca of the issue": "Minor mobile navbar GitHub visibility mismatch: Navbar.tsx line 90 uses `hidden sm:inline-flex` on the GitHub anchor. Tailwind's `sm` breakpoint is 640px, so at 390px the icon is display:none. Fix (if needed): change `hidden sm:inline-flex` to `inline-flex` so it stays visible at all viewports."
+}

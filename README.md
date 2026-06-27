@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Greenlight Studio — Marketing Website
 
-## Getting Started
+The public marketing website for **Greenlight Studio**, an AI-powered production management platform for film, television, commercials, photography, and creative productions.
 
-First, run the development server:
+Built with **Next.js 16 (App Router)**, **TypeScript**, **Tailwind CSS v4**, and lightweight CSS-driven scroll animations. Optimized for Vercel deployment.
+
+---
+
+## Quick Start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install
+yarn dev      # http://localhost:3000
+yarn build
+yarn start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+app/
+├── app/
+│   ├── layout.tsx       # Root layout + fonts + metadata
+│   ├── page.tsx         # Landing page (composition only)
+│   └── globals.css      # Theme tokens, utilities, animations
+├── components/          # Reusable sections
+│   ├── Navbar.tsx
+│   ├── Hero.tsx
+│   ├── ProductPreview.tsx
+│   ├── FeatureGrid.tsx
+│   ├── Philosophy.tsx
+│   ├── Roadmap.tsx
+│   ├── Pricing.tsx
+│   ├── Download.tsx
+│   ├── Footer.tsx
+│   └── Reveal.tsx       # Scroll-reveal primitive (IntersectionObserver)
+├── lib/
+│   └── content.ts       # ALL copy & links — edit text here
+├── public/
+│   ├── logo/            # Drop a new logo here as greenlight-logo.png
+│   └── screenshots/     # Drop new screenshots here (sign-in.jpg, library.jpg, marketplace.jpg)
+├── next.config.ts
+└── tsconfig.json
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## How to Customize
 
-## Learn More
+### Replace the logo
+Drop a new image into `public/logo/greenlight-logo.png`. No code changes required.
 
-To learn more about Next.js, take a look at the following resources:
+### Replace screenshots
+Add new files into `public/screenshots/` and update the `SCREENSHOTS` array in `lib/content.ts`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Update copy
+All text lives in `lib/content.ts` — headlines, features, roadmap items, footer links, APK URL, etc. Components consume from there.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Update the APK download
+Edit `SITE.apk` and `SITE.apkVersion` in `lib/content.ts`.
 
-## Deploy on Vercel
+## Design System
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* **Theme**: Dark, cinematic. Background `#050505`, surface elevations, single bright Greenlight accent `~#2ddc6a`.
+* **Fonts**: Bricolage Grotesque (headlines), Instrument Serif (display italics), Geist (body), Geist Mono (mono tags).
+* **Motion**: A lightweight `<Reveal>` component using `IntersectionObserver` + CSS transitions. Buttons and cards animate via CSS.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Future-Proofing
+
+The structure is ready to expand with:
+
+* `app/docs/` — Documentation
+* `app/blog/` — Blog / Changelog
+* `app/pricing/` — Detailed pricing plans
+* `app/app/` — Dashboard / customer portal (place inside its own route group)
+* `app/(auth)/` — Authentication routes
+
+Add new routes as folders under `app/`. Share the existing components in `components/` and tokens in `app/globals.css`.
+
+## Deploy
+
+This is a pure static-first Next.js app, ideal for Vercel:
+
+```bash
+# Push to GitHub, then import on vercel.com.
+# No env vars are required for the marketing site as it stands.
+```
