@@ -81,8 +81,8 @@ export const FEATURES = [
 
 export const ROADMAP = [
   { status: "done", icon: "CheckCircle2", label: "Android Beta" },
-  { status: "active", icon: "Hammer", label: "Asset Library" },
-  { status: "active", icon: "Hammer", label: "Room Scanner" },
+  { status: "done", icon: "CheckCircle2", label: "Asset Library" },
+  { status: "done", icon: "CheckCircle2", label: "Room Scanner" },
   { status: "active", icon: "Hammer", label: "Project Dashboard" },
   { status: "active", icon: "Hammer", label: "AI Automation" },
   { status: "planned", icon: "Calendar", label: "iOS App" },
