@@ -87,7 +87,7 @@ export default function Navbar() {
             rel="noopener noreferrer"
             aria-label="GitHub"
             data-testid="navbar-github"
-            className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-full border border-border-strong text-fg-muted hover:text-fg hover:border-[#3a3a3a] transition-colors"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border-strong text-fg-muted hover:text-fg hover:border-[#3a3a3a] transition-colors"
           >
             <GithubIcon className="h-4 w-4" />
           </a>
