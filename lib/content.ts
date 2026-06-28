@@ -6,7 +6,7 @@ export const SITE = {
   tagline: "AI Production Management",
   url: "https://greenlight-studio.ca",
   github: "https://github.com/KingCarni/Greenlight-Webpage",
-  apk: "https://expo.dev/artifacts/eas/zltOXkdQ544b4KxpppRPqeteAMF4jqcpIVwvwU1-7Vo.apk",
+  apk: "https://expo.dev/artifacts/eas/h_8NREc6P6IM3TMcxLTauHLUtQQ6orShXQ6sk8s7fXg.apk",
   apkVersion: "v0.1.0-beta",
   apkReleaseNote: "Initial public beta — Asset Library, Room Scanner & Scene Editor previews.",
 };
